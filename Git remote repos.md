@@ -37,6 +37,7 @@ B. Create new location for new `sub` project & pull the code into it from the lo
 my_project$ cd ..
 $ md sub
 $ cd sub
+$ git init
 $ git pull /my_project sub-only
 ```
 C. Create clone of the project and copy to server.
