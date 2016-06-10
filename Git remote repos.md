@@ -26,6 +26,7 @@ my_project
 ```
 
 Want to carve sub directory out of subtree.
+
 A. Create branch `sub-only` that only has git commands for `sub` directory.
 ```
 my_project$ git subtree split -P sub -b sub-only
