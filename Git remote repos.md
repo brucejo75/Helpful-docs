@@ -58,6 +58,8 @@ C. Create clone of the project and copy to server.
  origin  file:////mpc/git/sub.git (push)
 ```
 ### Add sub-module
+Taken from [here](https://chrisjean.com/git-submodules-adding-using-removing-and-updating/).
+
 Now that we have separated out the sub-module as it's own project we now want to put it back into the tree.
 
 A. Clear the sub project from the my_project tree
