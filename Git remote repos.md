@@ -1,5 +1,5 @@
-### Git commands to create a new server repo
-####Create clone of your project in .git file
+# Git commands to create a new server repo from a subdir
+###Create clone of your project in .git file
 
 ```
 $ cd my_project
@@ -15,7 +15,7 @@ origin  file:////mpc/git/my_project.git (push)
 
 Now new my_project directory is a clone of your server .git project.
 
-#### Carve off sub from my_project
+### Carve off sub from my_project
 Taken from [here](http://stackoverflow.com/questions/359424/detachmove-subdirectory-into-separate-git-repository/17864475#17864475).
 
 Working on this tree:
@@ -56,4 +56,27 @@ C. Create clone of the project and copy to server.
  sub$ git remote -v
  origin  file:////mpc/git/sub.git (fetch)
  origin  file:////mpc/git/sub.git (push)
+```
+### Add sub-module
+Now that we have separated out the sub-module as it's own project we now want to put it back into the tree.
+
+A. Clear the sub project from the my_project tree
+```
+$ cd my_project
+my_project$ del sub
+my_project$ git add *
+my_project$ git commit
+```
+B. Put the sub module into the tree
+```
+$ cd my_project
+my_project$ git submodule add file:////mpc/git/sub.git sub
+git add sub
+git commit
+```
+C. Initialize and prep the submodule
+```
+my_project$ git submodule init
+my_project$ git submodule update
+
 ```
