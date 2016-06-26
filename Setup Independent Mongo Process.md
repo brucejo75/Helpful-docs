@@ -127,13 +127,8 @@ Make sure you add the user to the admin DB.  Then create the user.
 
 Finally, we can set up the environment variables required by Meteor:
 ```
-MONGO_URL=mongodb://192.168.1.100:27017/DBNAME?replicaSet=rs0&connectTimeoutMS=60000&socketTimeoutMS=60000
-MONGO_OPLOG_URL=mongodb://logreader:password@192.168.1.100:27017/local?authSource=admin
-```
--or of you are running Mongo on the same machine as your Meteor process:
-```
-MONGO_URL=mongodb://127.0.0.1:27017/DBNAME?replicaSet=rs0&connectTimeoutMS=60000&socketTimeoutMS=60000
-MONGO_OPLOG_URL=mongodb://logreader:password@127.0.0.1:27017/local?authSource=admin
+MONGO_URL=mongodb://DBHOST:27017/DBNAME?replicaSet=rs0&connectTimeoutMS=60000&socketTimeoutMS=60000
+MONGO_OPLOG_URL=mongodb://logreader:password@DBHOST:27017/local?authSource=admin
 ```
 The MONGO_URL environment variable contains some arguments:
 - `replicaSet=rs0`: this replica set name matches the one set on rs.initiate().
