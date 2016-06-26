@@ -6,8 +6,9 @@ There are a couple of steps to setting this up:
   1. My Mongo config options - this will tell give you a set of config options that are necessary for setting up this DB.
   2. Start the database.
   3. Initialize replica set.  - to get the replica set working you need to do an [`rs.initiate()`](https://docs.mongodb.com/manual/reference/method/rs.initiate/).
-  4. Set up an oplog reader user in your mongo DB.
-  5. Set up environment variables and run meteor.
+  4. Intialize the admin DB and your DB.
+  5. Set up an oplog reader user in your mongo DB.
+  6. Set up environment variables and run meteor.
 
 
 ###1.  My Mongo [config options](https://docs.mongodb.com/manual/reference/configuration-options/)
@@ -24,7 +25,7 @@ systemLog:
 storage:
     dbPath: c:\DB\DBNAME
 net:
-    bindIp: 127.0.0.1,192.168.1.100
+    bindIp: DBHOST
     port: 27017
 replication:
    replSetName: rs0
@@ -41,7 +42,7 @@ Here I am simply specifying the path to where the DB is on disk.
 
 ####[net](https://docs.mongodb.com/manual/reference/configuration-options/#net-options):
 
-This one is important and valuable.  If you want your mongo DB to be able to connect using your LAN you are required to enter in the [bindIP](https://docs.mongodb.com/manual/reference/configuration-options/#net.bindIp) option in correctly.  On mine I specify 2 addresses: local host (`127.0.0.1`) and the LAN address of the computer running Mongo ( `192.168.1.100`).  Now other computers on my LAN can also access this DB.  That way I can develop my Meteor app on one machine and host my mongoDB on another machine.
+This one is important and valuable.  If you want your mongo DB to be able to connect using your LAN you are required to enter the [bindIP](https://docs.mongodb.com/manual/reference/configuration-options/#net.bindIp) option correctly.  This address must be accessible from any client server that accesses the DB. I specify the LAN address of the computer running Mongo ( `DBHOST`).  Each of my server host machines have access to `DBHOST`.  Now other computers on my LAN can access this DB.  That way I can develop my Meteor app on one machine and host my mongoDB on another machine.
 
 The [port](https://docs.mongodb.com/manual/reference/configuration-options/#net.port) is simply the port to connect to Mongo. I use the default `27017`.
 
@@ -75,34 +76,69 @@ If you want to change config settings on an OSX machine you will need to kill th
 
 ### 3. Initialize the Replica set
 
-Connect to your database (you can use [mongo shell](https://docs.mongodb.com/manual/mongo/), I have been using [robomongo](https://robomongo.org/)).  Run the following command:
+Connect to your database (you can use [mongo shell](https://docs.mongodb.com/manual/mongo/), I have been using [robomongo](https://robomongo.org/)).  Run the [`rs.initiate()`](https://docs.mongodb.com/manual/reference/method/rs.initiate/) command:
 
-[`rs.initiate()`](https://docs.mongodb.com/manual/reference/method/rs.initiate/)
+```
+rs.initiate({
+  "_id" : "rs0",
+  "members" : [ 
+      {
+          "host" : "DBHOST:27017",
+      }
+  ]
+})
+```
+This sets 2 key variables:
+#### The replica set name: `rs0`
+#### The host for the primary member: `DBHOST`
+
+It is important that these 2 variables are set properly, you can confirm their settings with a `rs.conf()` command.
 
 That's it!  Now you should be able to examine collections on the DB.
 
-### 4. Set up an oplog reader on your DB
+### 4. Intialize admin and your DB
+To properly set up a user on your DB, you will need to add the user to the `admin` DB.  But first the admin DB has to be initialized.  Execute these mongo shell commands:
+
+```
+use admin  # Sets your current DB to admin
+db.foo.insert({foo: "foo"}) # This will insert a collection named foo with a document
+                            # that has one property foo set to foo
+use DBNAME  # Set your current DB to DBNAME (substitute your DB name)
+db.foo.insert({foo: "foo"}) # insert a dummy collection
+db.show   # In addition to local you should now see admin and DBNAME databases
+```
+
+### 5. Set up an oplog reader user on your admin DB
 
 In order for Meteor to utilize the oplogs it needs to have access to the logs.  While connected to your database you can grant access by creating a user in the DB that has oplog read access using [`db.createUser`](https://docs.mongodb.com/manual/reference/method/db.createUser/):
 
 ```
+use admin
 db.createUser({ user: "logreader",
   pwd: "password",
   roles: ["read"]
 })
 ```
 
-#### 5. Set up Environment variables
+Make sure you add the user to the admin DB.  Then create the user.
+
+#### 6. Set up Environment variables
 
 Finally, we can set up the environment variables required by Meteor:
 ```
-MONGO_URL=mongodb://192.168.1.100:27017
+MONGO_URL=mongodb://192.168.1.100:27017/DBNAME?replicaSet=rs0&connectTimeoutMS=60000&socketTimeoutMS=60000
 MONGO_OPLOG_URL=mongodb://logreader:password@192.168.1.100:27017/local?authSource=admin
 ```
 -or of you are running Mongo on the same machine as your Meteor process:
 ```
-MONGO_URL=mongodb://127.0.0.1:27017
+MONGO_URL=mongodb://127.0.0.1:27017/DBNAME?replicaSet=rs0&connectTimeoutMS=60000&socketTimeoutMS=60000
 MONGO_OPLOG_URL=mongodb://logreader:password@127.0.0.1:27017/local?authSource=admin
 ```
+The MONGO_URL environment variable contains some arguments:
+- `replicaSet=rs0`: this replica set name matches the one set on rs.initiate().
+- `connectionTimeoutMS=60000`: Healthy 60 second connection timeout
+- `socketTimeoutMS=60000`: Healthy 60 second socket timeout
 
-Now run meteor and your database will be running where you specified.
+The MONGO_OPLOG_URL sets up the authenticated oplog reader URL.
+
+Set these environment variables in your shell and you can run meteor and your database will be running where you specified.
