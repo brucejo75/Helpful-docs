@@ -96,7 +96,7 @@ It is important that these 2 variables are set properly, you can confirm their s
 
 That's it!  Now you should be able to examine collections on the DB.
 
-### 4. Intialize admin and your DB
+### 4. Intialize the admin DB and your DB
 To properly set up a user on your DB, you will need to add the user to the `admin` DB.  But first the admin DB has to be initialized.  Execute these mongo shell commands:
 
 ```
@@ -107,6 +107,7 @@ use DBNAME  # Set your current DB to DBNAME (substitute your DB name)
 db.foo.insert({foo: "foo"}) # insert a dummy collection
 db.show   # In addition to local you should now see admin and DBNAME databases
 ```
+All they do is toss some data into the DB so that the DB initializes.  You can remove the foo collections once the DBs are operational with some real data.
 
 ### 5. Set up an oplog reader user on your admin DB
 
