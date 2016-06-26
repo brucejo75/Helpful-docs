@@ -1,6 +1,6 @@
 ## Set up Independent Mongo process for Meteor Development
 
-While developing my Meteor application I have started to require running my Mongo process separate from the process that Meteor fires up when it is run.
+While developing my Meteor application I have started to require running my Mongo process separate from the process that Meteor fires up when it is run.  Because I have a port open to my running app on a separate computer, I put the DB on the computer servicing the port.  For performance reasons you will want to be running a replica set so that DB change events can be fired by [OPLOG tailing](https://github.com/meteor/docs/blob/version-NEXT/long-form/oplog-observe-driver.md).  OPLOG tailing is much more responsive than polling for changes.  For development you only really need a single instance replica set and that is what I describe here.
 
 There are a couple of steps to setting this up:
   1. My Mongo config options - this will tell give you a set of config options that are necessary for setting up this DB.
