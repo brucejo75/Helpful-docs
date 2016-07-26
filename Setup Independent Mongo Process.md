@@ -121,7 +121,14 @@ db.createUser({ user: "logreader",
 })
 ```
 
-Make sure you add the user to the admin DB.  Then create the user.
+Make sure you add the user to the admin DB.  `use admin` then create the user.
+
+Other useful functions:
+```
+db.getUser("username")
+db.changeUserPassword("username", "newPassword")
+db.dropUser("username")
+```
 
 #### 6. Set up Environment variables
 
