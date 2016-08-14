@@ -82,3 +82,10 @@ my_project$ git submodule init
 my_project$ git submodule update
 
 ```
+### Annotated Tag
+```
+git tag -a <tag> -m "<message>"
+
+e.g.:
+git tag -a v1.1 -m "Version 1.1"
+```
