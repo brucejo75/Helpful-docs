@@ -2,22 +2,12 @@
 
 ### Calculated data (destination data)
 
-The calculated join data is copied into a destination table.
+Join data is calculated from source data and placed into the current CSV file's named table. (e.g. the $VAR variable `name`).
 
-`dstTable`: **destination table**, this is the table that will contain the result of the join.
-
-* The `dstTable` can equal the name of the current table.  If it is equal to the current table then the join will calculate *in-place* with the following restrictions:
-  * The current table is **required** to be the first source table.
-  * All fields from the current table will be joined and are unable to be overwritten by fields joined from subsequent source tables.
-  * A 2nd source table is **required** when the destination table is the current table.
-* If `dstTable` is equal to the name of an existing table, then an error will be raised and the join will not be performed.
-* If `dstTable` is a unique name.
-  - If the current table is empty then sources will specify the tables to join.
-  - If the current table has data, then the current table can **optionally** be specified as a source for the join with no restrictions.
-
+* Any data in the destination will flag an error.
 Destination table options can be specified via the `options` object.
 
-`options`: The following options can be set on the calculated table:
+`options`: The following options can be set on a calculated table:
 
 * `singleRow`: `true|false`
 * `onDemand`: `true|false`
@@ -41,36 +31,45 @@ Source data is specified as an array of objects with the following keys:
 
 `common*`: this is the common key specification for this table. This will equal the key name.
 
-`incl`: specify a key name or an array of key names that you want to include in the join.
+`incl`: specify a key name or an array of key names that you want to include in the join.  If the `incl` option is used only the keys specified in `incl` will be joined.
 
 `excl`: sometimes it is simpler to specify the fields you want to exclude from the join.  Use `excl` to specify a key name or an array of key names that you want to exclude from the join.
 
+`xlt`: this is an optional translation array.  Each array element is a translation specification of the form:
+```
+{"<src keyname>": "<new keyname>"}
+```
+In essence, this is a way to rename a field and put it into the calculated table.
+
+`subObj`: sometimes it is useful to group all source fields into a sub-object.  This can be accomplished with the `subObj` parameter.  `subObj` can be used in conjunction with `xlt` to put translated `incl` fields into the `subObj`.
+
 Notes:
 
+* `*` fields are required.
 * only one of `incl` or `excl` can be specified.  If both are specified an error will be thrown.
 * For filter operations use mongo dot notation to refer to sub keys.  `key.subkey` specifies the subkey of the key object.
+
 
 Example specification:
 
 ```
-{
-  dstTable: "<name of dest table>",
-  options: {
-    singleRow: true,
-    onDemand: true
-  },
-  sources:[{
-    table: "<name of 1st table>",
-    common: "<this tables common key>",
+[{
+    "table": "<name of 1st table>",
+    "common": "<this tables common key>",
   }, {
-    table: "<name of 2nd table>",
-    common: "<this tables common key>",
-    incl: "oneKey"
-  },{
+    "table": "<name of 2nd table>",
+    "common": "<this tables common key>",
+    "incl": "oneKey"
+  }, {
+    "table": "<name of 3rd table>",
+    "common": "<this tables common key>",
+    "incl": ["_id", "name", "address"]
+    "xlt": ["_custID", "custname"]
+  },
   ...
-    table: "<name of table n>",
-    common: "<this table's common key>",
-    excl: ["<key1 to exclude>", "<key2 to exclude>"]
+    "table": "<name of table n>",
+    "common": "<this table's common key>",
+    "excl": ["<key1 to exclude>", "<key2 to exclude>"]
+    "subobj": "parts"
   }]
-}
 ```
