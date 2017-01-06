@@ -35,7 +35,7 @@ Source data is specified as an array of objects with the following keys:
 
 `excl`: sometimes it is simpler to specify the fields you want to exclude from the join.  Use `excl` to specify a key name or an array of key names that you want to exclude from the join.
 
-`xlt`: this is an optional translation array.  Each array element is a translation specification of the form:
+`xlt`: this is an optional translation object.  Each object key is a translation specification of the form:
 ```
 {"<src keyname>": "<new keyname>"}
 ```
@@ -64,7 +64,7 @@ Example specification:
     "table": "<name of 3rd table>",
     "common": "<this tables common key>",
     "incl": ["_id", "name", "address"]
-    "xlt": ["_custID", "custname"]
+    "xlt": {"_custID", "custname", "src": "translation"}
   },
   ...
     "table": "<name of table n>",
