@@ -21,11 +21,11 @@ On Windows:
 ```
 systemLog:
     destination: file
-    path: c:\DB\DBNAME_LOG\DBNAME.log
+    path: c:\<DB>\<DBNAME_LOG>\<DBNAME>.log
 storage:
-    dbPath: c:\DB\DBNAME
+    dbPath: c:\<DB>\<DBNAME>
 net:
-    bindIp: DBHOST
+    bindIp: <DBHOST>
     port: 27017
 replication:
    replSetName: rs0
@@ -42,7 +42,7 @@ Here I am simply specifying the path to where the DB is on disk.
 
 ####[net](https://docs.mongodb.com/manual/reference/configuration-options/#net-options):
 
-This one is important and valuable.  If you want your mongo DB to be able to connect using your LAN you are required to enter the [bindIP](https://docs.mongodb.com/manual/reference/configuration-options/#net.bindIp) option correctly.  This address must be accessible from any client server that accesses the DB. I specify the LAN address of the computer running Mongo ( `DBHOST`).  Each of my server host machines have access to `DBHOST`.  Now other computers on my LAN can access this DB.  That way I can develop my Meteor app on one machine and host my mongoDB on another machine.
+This one is important and valuable.  If you want your mongo DB to be able to connect using your LAN you are required to enter the [bindIP](https://docs.mongodb.com/manual/reference/configuration-options/#net.bindIp) option correctly.  This address must be accessible from any client server that accesses the DB. I specify the LAN address of the computer running Mongo ( `<DBHOST>`).  Each of my server host machines have access to `<DBHOST>`.  Now other computers on my LAN can access this DB.  That way I can develop my Meteor app on one machine and host my mongoDB on another machine.
 
 The [port](https://docs.mongodb.com/manual/reference/configuration-options/#net.port) is simply the port to connect to Mongo. I use the default `27017`.
 
@@ -70,7 +70,7 @@ You want to set up a Windows service.  I followed the instructions [here](https:
 ##### [Host MongoDB on OSX](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)
 On Lunix based machines you need only kick off `mongod` with the `--fork` flag.  Like this:
 ```
-mongod --fork --config DB/db.cfg
+mongod --fork --config <DB>/<db>.cfg
 ```
 If you want to change config settings on an OSX machine you will need to kill this processes and restart it.
 
@@ -82,13 +82,13 @@ Connect to your database (you can use [mongo shell](https://docs.mongodb.com/man
 rs.initiate({
   "_id" : "rs0",
   "members" : [ 
-      { "_id": 0, "host" : "DBHOST:27017" }
+      { "_id": 0, "host" : "<DBHOST>:27017" }
   ]
 })
 ```
 This sets 2 key variables:
 #### The replica set name: `rs0`
-#### The host for the primary member: `DBHOST`
+#### The host for the primary member: `<DBHOST>`
 
 It is important that these 2 variables are set properly, you can confirm their settings with a `rs.conf()` command.
 
@@ -101,7 +101,7 @@ To properly set up a user on your DB, you will need to add the user to the `admi
 use admin  # Sets your current DB to admin
 db.foo.insert({foo: "foo"}) # This will insert a collection named foo with a document
                             # that has one property foo set to foo
-use DBNAME  # Set your current DB to DBNAME (substitute your DB name)
+use <DBNAME>  # Set your current DB to <DBNAME>
 db.foo.insert({foo: "foo"}) # insert a dummy collection
 db.show   # In addition to local you should now see admin and DBNAME databases
 ```
@@ -132,8 +132,8 @@ db.dropUser("username")
 
 Finally, we can set up the environment variables required by Meteor:
 ```
-MONGO_URL=mongodb://DBHOST:27017/DBNAME?replicaSet=rs0&connectTimeoutMS=60000&socketTimeoutMS=60000
-MONGO_OPLOG_URL=mongodb://logreader:password@DBHOST:27017/local?authSource=admin
+MONGO_URL=mongodb://<DBHOST>:27017/<DBNAME>?replicaSet=rs0&connectTimeoutMS=60000&socketTimeoutMS=60000
+MONGO_OPLOG_URL=mongodb://logreader:password@<DBHOST>:27017/local?authSource=admin
 ```
 The MONGO_URL environment variable contains some arguments:
 - `replicaSet=rs0`: this replica set name matches the one set on rs.initiate().
