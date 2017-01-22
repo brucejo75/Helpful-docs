@@ -82,9 +82,7 @@ Connect to your database (you can use [mongo shell](https://docs.mongodb.com/man
 rs.initiate({
   "_id" : "rs0",
   "members" : [ 
-      {
-          "host" : "DBHOST:27017",
-      }
+      { "_id": 0, "host" : "DBHOST:27017" }
   ]
 })
 ```
