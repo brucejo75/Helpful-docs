@@ -10,6 +10,8 @@ There are a couple of steps to setting this up:
   5. Set up an oplog reader user in your mongo DB.
   6. Set up environment variables and run meteor.
 
+Note: using mongo shell seemed to be better than using Robomongo.  The errors produced are better.
+
 
 ###1.  My Mongo [config options](https://docs.mongodb.com/manual/reference/configuration-options/)
 
