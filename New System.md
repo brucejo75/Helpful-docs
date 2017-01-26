@@ -7,7 +7,7 @@ Specifically run this first:
 ```
 npm install --global --production windows-build-tools
 ```
-### Match node architecture
+#### Match node architecture
 In order for node-inspector to work it should be installed in the same version/architecture as the meteor node version.  Today meteor's node version is 32 bit.
 
 Steps:
