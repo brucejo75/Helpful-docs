@@ -64,7 +64,7 @@ Example specification:
     "table": "<name of 3rd table>",
     "common": "<this tables common key>",
     "incl": ["_id", "name", "address"]
-    "xlt": {"_custID", "custname", "src": "translation"}
+    "xlt": {"_custID":, "custname", "src": "translation"}
   },
   ...
     "table": "<name of table n>",
