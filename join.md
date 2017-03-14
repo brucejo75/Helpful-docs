@@ -1,75 +1,59 @@
 ## JOIN operations
 
-### Calculated data (destination data)
+Join operations are specified as a JSON object in the $VAR column
 
-Join data is calculated from source data and placed into the current CSV file's named table. (e.g. the $VAR variable `name`).
+### Table data
 
-* Any data in the destination will flag an error.
-Destination table options can be specified via the `options` object.
+`name*`: this is the name of the resultant table.  All tables must have a name.
 
-`options`: The following options can be set on a calculated table:
+`singleRow`: `true|false`.  singleRow is optional and specifies whether the table has only 1 row.
+If `singleRow` is set then each sub object can be referenced directly rather than through an array reference
+(e.g. tablename.fiedl instead of tablename[0].field)
 
-* `singleRow`: `true|false`
-* `onDemand`: `true|false`
+`join`: the join command specifies an array of Source Objects.
 
-### Source data
+Example:
+```
+{
+  "name": "exampleTable",
+  "singleRow": false,
+  "join": [
+    <source object 1>,
+    <source object 2>
+  ]
+}
+```
 
-It is only required that there be 1 set of source data.  Supplying 1 source could create a new *"subset"* table.  Other than that it is not useful.
 
-When 2 or more sets of source data are supplied the following rules apply:
+### Join Source Objects
 
-* Each table must have a common key with all other source tables.
-* The number of rows of the join will be equal to the number of rows in the first source table.
-* The common key value will be taken from the first source table.
-* Fields have priority from left to right.  In other words, if there are common join fields in the 1st source table and the 2nd source table, the resultant key value in the destination table will have the value from the 1st source table.
+A Join operation requires at least 2 source tables.
+  * The first source table must have a valid common value for every document.
+  * The common key value will be taken from the first source table.
+  * To be joined, subsequent tables must have a common key that matches the 1st source table common value.
+  * The resultant table will have as many rows as the first source table.
+  * If subsequent source tables (2nd table and beyond) do not have a matching common the fields will simply not be included.
+  * Fields have priority from left to right.  In other words, if there are fields with the same name in the 1st source table and the 2nd source table,
+the resultant key value in the destination table will have the value from the 1st source table.
 
-Keys can be filtered from a table via an `incl` list or an `excl` list.
 
 Source data is specified as an array of objects with the following keys:
 
-`table*`: this is the name of the source table.  This can equal the current table, see `dstTable` rules above.
+`table*`: Required: this is the name of the source table.
 
-`common*`: this is the common key specification for this table. This will equal the key name.
+`common*`: Required: this is the common key specification for this table. This will equal the key name.  If there are more than 1 source tables a common is required.
 
-`incl`: specify a key name or an array of key names that you want to include in the join.  If the `incl` option is used only the keys specified in `incl` will be joined.
+`recipients`: this is an optional array specifying source objects that have recipients as their values.
+For example, you might have a table that has a column for `managers` and another column for `laborers`.
+Without specifying recipients everyone would have access to this information.  To filter the data for specific recipients you can use the recipients operator.
+To send the data to `managers`, `recipients` would become "recipients": ["managers"].  You can specify multiple recipients.  For example,
+"recipients": ["managers", "laborers"] would result in data being sent to both categories of users.
 
-`excl`: sometimes it is simpler to specify the fields you want to exclude from the join.  Use `excl` to specify a key name or an array of key names that you want to exclude from the join.
+A recipient refers to either a:
+* user email
+* user alias
+* group name
 
-`xlt`: this is an optional translation object.  Each object key is a translation specification of the form:
-```
-{"<src keyname>": "<new keyname>"}
-```
-In essence, this is a way to rename a field and put it into the calculated table.
+Additionally, optional field modification operators can be specified for each source table.
+Keys can be filtered, renamed and sub-classed via the optional field modification operators.
 
-`subObj`: sometimes it is useful to group all source fields into a sub-object.  This can be accomplished with the `subObj` parameter.  `subObj` can be used in conjunction with `xlt` to put translated `incl` fields into the `subObj`.
-
-Notes:
-
-* `*` fields are required.
-* only one of `incl` or `excl` can be specified.  If both are specified an error will be thrown.
-* For filter operations use mongo dot notation to refer to sub keys.  `key.subkey` specifies the subkey of the key object.
-
-
-Example specification:
-
-```
-[{
-    "table": "<name of 1st table>",
-    "common": "<this tables common key>",
-  }, {
-    "table": "<name of 2nd table>",
-    "common": "<this tables common key>",
-    "incl": "oneKey"
-  }, {
-    "table": "<name of 3rd table>",
-    "common": "<this tables common key>",
-    "incl": ["_id", "name", "address"]
-    "xlt": {"_custID":, "custname", "src": "translation"}
-  },
-  ...
-    "table": "<name of table n>",
-    "common": "<this table's common key>",
-    "excl": ["<key1 to exclude>", "<key2 to exclude>"]
-    "subobj": "parts"
-  }]
-```
