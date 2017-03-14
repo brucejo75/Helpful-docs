@@ -57,3 +57,30 @@ A recipient refers to either a:
 Additionally, optional field modification operators can be specified for each source table.
 Keys can be filtered, renamed and sub-classed via the optional field modification operators.
 
+`exampleSource1` table columns: | ID  | users    | admins | data |
+
+`exampleSource2` table columns: | _id | managers | data2  |
+
+Example specification:
+```
+{
+  "name": "exampleJoin1",
+  "singleRow": false,
+  "join": [{
+    "table": "exampleSource1",
+    "common": "ID",
+    "recipients": ["users","admins"],
+    "excl": ["ID"],
+    "xlt": [{"old": "users", "new": "clients"}]
+    }, {
+    "table": "exampleSource2",
+    "common": "_id",
+    "recipients": ["managers"],
+    "excl": ["_id"],
+    }
+  ]
+}
+
+```
+Resulting data set:
+`exampleJoin1` table columns: | clients | admins | data | managers | data2 |
