@@ -130,7 +130,7 @@ db.changeUserPassword("username", "newPassword")
 db.dropUser("username")
 ```
 
-#### 6. Set up Environment variables
+### 6. Set up Environment variables
 
 Finally, we can set up the environment variables required by Meteor:
 ```
