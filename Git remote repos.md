@@ -1,5 +1,5 @@
 # Git commands to create a new server repo from a subdir
-###Create clone of your project in .git file
+### Create clone of your project in .git file
 
 ```
 $ cd my_project
