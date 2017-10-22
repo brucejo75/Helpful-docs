@@ -42,7 +42,7 @@ This is pretty simple it specifies that I am logging to a file and if I log to a
 
 Here I am simply specifying the path to where the DB is on disk.
 
-####[net](https://docs.mongodb.com/manual/reference/configuration-options/#net-options):
+#### [net](https://docs.mongodb.com/manual/reference/configuration-options/#net-options):
 
 This one is important and valuable.  If you want your mongo DB to be able to connect using your LAN you are required to enter the [bindIP](https://docs.mongodb.com/manual/reference/configuration-options/#net.bindIp) option correctly.  This address must be accessible from any client server that accesses the DB. I specify the LAN address of the computer running Mongo ( `<DBHOST>`).  Each of my server host machines have access to `<DBHOST>`.  Now other computers on my LAN can access this DB.  That way I can develop my Meteor app on one machine and host my mongoDB on another machine.
 
