@@ -13,7 +13,7 @@ There are a couple of steps to setting this up:
 Note: using mongo shell seemed to be better than using Robomongo.  The errors produced are better.
 
 
-###1.  My Mongo [config options](https://docs.mongodb.com/manual/reference/configuration-options/)
+### 1.  My Mongo [config options](https://docs.mongodb.com/manual/reference/configuration-options/)
 
 I am finding that using [mongo configuration files](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file) is really the way to go for me.  So here is my example config file and I will describe what each section means:
 
