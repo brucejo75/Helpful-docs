@@ -1,4 +1,4 @@
-# Configure mongo server to accept connections from remote clients
+# Windows: Configure mongo server to accept connections from remote clients
 
 ### [Open up port for external access](https://docs.mongodb.com/manual/tutorial/configure-windows-netsh-firewall/#traffic-to-and-from-mongod-exe-instances)
 
