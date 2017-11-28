@@ -60,7 +60,7 @@ This file is easier to edit because it is on NTFS.
 - Make sure make is installed: `make --version`
 
 #### node-gyp
-[Installagion](https://github.com/nodejs/node-gyp#installation)
+[Installation](https://github.com/nodejs/node-gyp#installation)
 
 `npm install -g node-gyp`
 
