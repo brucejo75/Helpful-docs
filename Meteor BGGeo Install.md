@@ -11,13 +11,13 @@ under the subheading: "Installing a plugin from Git".
 
 You need 3 `cordova-background-geolocation` parameters:
 - **id**: for the premium version this is `cordova-background-geolocation`
-- **git location**: `https://github.com/transistorsoft/cordova-background-geolocation`
+- **git location**: `https://github.com/transistorsoft/cordova-background-geolocation.git` **Must have `.git` extension**
 - **commit id**:  This can be found under the [releases directory](https://github.com/transistorsoft/cordova-background-geolocation/releases)
 click on the commit id and you will be able to capture the full commit id.  For v3.0.1 the id is `f2e4eceeb0b94d741ac56f07eda8e58de96c4a74`
 
 Now you can assemble the full command for v3.0.1:
 
-`meteor add cordova:cordova-background-geolocation@https://github.com/transistorsoft/cordova-background-geolocation#f2e4eceeb0b94d741ac56f07eda8e58de96c4a74`
+`meteor add cordova:cordova-background-geolocation@https://github.com/transistorsoft/cordova-background-geolocation.git#f2e4eceeb0b94d741ac56f07eda8e58de96c4a74`
 
 ### Configure the plugin
 
