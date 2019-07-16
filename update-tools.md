@@ -19,7 +19,7 @@ Instructions for how to update all the tools on the MacOS Server
 ### nvm
 get latest command at [nvm-sh/nvm](https://github.com/nvm-sh/nvm#installation-and-update).
 
-for v34:
+for v0.34.0:
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 ```
@@ -32,6 +32,7 @@ nvm install <version #>
 e.g.
 nvm install 8.15.1
 ```
+Will need to restart the shell.
 
 ### npm
 ```bash
@@ -39,6 +40,7 @@ npm install -g npm@<version #>
 e.g.
 npm install -g npm@6.9.0
 ```
+Will need to restart the shell.
 
 ### pm2
 [Update pm2](http://pm2.keymetrics.io/docs/usage/update-pm2/):
@@ -48,11 +50,13 @@ pm2 save
 npm install pm2 -g
 pm2 update
 ```
+Will need to restart the shell.
 
 ### bunyan
 ```bash
 npm install -g bunyan
 ```
+Will need to restart the shell.
 
 ## Brew Services
 Automatically, sets up OSX services that will be started at reboot.  To get help enter `brew services`
