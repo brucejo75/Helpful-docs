@@ -10,6 +10,8 @@ Pull all execution data under the `MERIS_LIVE_HOME` directory.
 1. `pm2 kill`
 2. `brew services stop mongodb@3.4`
 
+**Important:** verify that all processes are killed via `ps aux`.
+
 ## Move Mongo data
 1. `mv ~/MERISDB/MERIS/* ~/MERIS/mongo/db`
 2. `mv ~/MERISDB/MERISLOG/* ~/MERIS/mongo/logs`
