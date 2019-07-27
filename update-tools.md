@@ -4,6 +4,7 @@ Instructions for how to update all the tools on the MacOS Server
 1. nvm
 2. node (nvm)
 3. npm (nvm)
+5. logrotate (brew service)
 4. pm2 (nvm)
 5. bunyan (nvm)
 6. minio (brew service)
@@ -43,6 +44,13 @@ npm install -g npm@6.9.0
 ```
 Will need to restart the shell.
 
+### logrotate
+```bash
+brew install logrotate
+```
+
+`pm2` will handle starting/stopping logrotate for pm2 logs.
+
 ### pm2
 [Update pm2](http://pm2.keymetrics.io/docs/usage/update-pm2/):
 
@@ -52,6 +60,14 @@ npm install pm2 -g
 pm2 update
 ```
 Will need to restart the shell.
+
+#### logrotate for pm2
+Details [here](https://github.com/keymetrics/pm2-logrotate).
+
+Configure to rotate once per day at midnight
+```bash
+pm2 set pm2-logrotate:rotateInterval '0 0 * * *'
+```
 
 ### bunyan
 ```bash
