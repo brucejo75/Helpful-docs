@@ -11,6 +11,8 @@ Instructions for how to update all the tools on the MacOS Server
 7. mongodb (brew service)
 8. caddy (brew service)
 10. mc (brew)
+11. rclone (brew)
+12. aha (brew)
 
 ### Process Flow
 1. install nvm
