@@ -86,8 +86,8 @@ brew install mongodb@3.4
 brew install caddy
 brew install minio/stable/mc
 ```
-- plists can be found at `mroot/scripts/plists`
-- plists are installed to `/user/local/Cellar`
+- plists can be found at `mroot/config/<tool>`
+- plists are installed to `/usr/local/Cellar`
 
 ```bash
 cd /usr/local/Cellar
