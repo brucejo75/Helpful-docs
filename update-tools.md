@@ -93,7 +93,7 @@ brew install minio/stable/mc
 cd /usr/local/Cellar
 ```
 
-dig into each recipe and then copy in the plist from `mroot/scripts`
+dig into each recipe and then copy in the plist from `mroot/config/<tool>`
 
 brew will copy these plists to `/Library/LaunchDaemons/`
 
