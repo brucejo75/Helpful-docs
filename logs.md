@@ -21,3 +21,16 @@ flag definitions:
 - `-n` apparently stops comparing key whenever there is a non-numeric character in the key. That's the second crucial bit for keeping stacktraces in place. Important is if it was `-n -k1,1` it would only sort the log files by hour as colon is non-numeric. Apart from that `-n` speeds up numeric comparison so we would like to have it anyway.
 - the problem mentioned in the previous point is solved by pointing to specific characters positions in each key, that's why `-k1.1,1.2` (first and second digit of hour) `-k1.4,1.5` (first and second digit  of minutes) and so on. The first digit before the dot is always '1' as it points to the first column of the file line (which in our case is time). Shortly it's `-kA,B` where `A` and `B` are column positions in a given line (by default lines are delimited by blanks). Format of A and B used is <column-position>.<character-position-in-a-column>. Keep in mind that whenever there is a non-numeric character between `A` and `B` everything after it will be ignored in comparison if `-n` used.
 - `-s` disables default behaviour which is: whenever keys by which comparison is being done are the same full string comparison of the lines is done. We don't want that to preserve original log entries order. Not sure if it's necessary with `-m` though.
+
+## Set up logrotate
+
+- get config parameters: `pm2 get pm2-logrotate`
+
+Meris parameters: 
+- `pm2 set pm2-logrotate:max_size 50M`
+- `pm2 set pm2-logrotate:retain 30`
+- `pm2 set pm2-logrotate:compress false`
+- `pm2 set pm2-logrotate:dateFormat YYYY-MM-DD_HH-mm-ss`
+- `pm2 set pm2-logrotate:workerInterval 30`
+- `pm2 set pm2-logrotate:rotateInterval "0 0 0 * *"`
+- `pm2 set pm2-logrotate:rotateModule true`
