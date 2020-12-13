@@ -25,3 +25,14 @@ Host <host alias>
 Host *
   AddKeysToAgent yes
 ```
+### Apply keys to guest
+copy your keys to your guest:
+```bash
+ssh-copy-id -i ~/.ssh/<rsa key>.pub <username>@<domain/ip>
+```
+
+**Error**: `Warning: the ECDSA host key for '<domain>' differs from the key for the IP address '<ip address>'`
+
+**Solution**: `ssh-keygen -R <domain|IP>`
+
+
