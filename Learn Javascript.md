@@ -1,4 +1,4 @@
-# Learning Javascript (ecnascript)
+# Learning Javascript (ecmascript)
 Javascript it is interchangeable with ecmascript, they are the same thing.  I will always refer to it as javascript, but in this document I will always refer to it as ecmascript (to drive home the point).
 
 W3schools is kind of a classic training site: https://www.w3schools.com/js go there first
